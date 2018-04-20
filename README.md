@@ -1,4 +1,4 @@
-#CLI-Hangman
+# CLI-Hangman
 
 A simple hangman game created to demonstrate to students how to use constructors.
 
