@@ -13,20 +13,48 @@ var question = [{
   }
 }]
 var word = new Word('book');
+var guesses = 7;
 function guessLetter(){
   inquirer.prompt(question).then(function(response){
     var guess = response.guessedLetter;
-    word.guess(guess);
-    var output = word.wordDisplay();
-    console.log(output.join(''))
-    if(output.includes('_')){
+    var found = word.guess(guess);
+    var output = word.wordDisplay()
+    console.log(output.join(' '))
+    if((guesses === 0)&& (output.includes('_'))){
+      console.log('-----------------------------------')
+      console.log('YOU LOSE!')
+      console.log('The answer was: ' + word.stringWord)
+      console.log('-----------------------------------')
+    }else if(output.includes('_')){
+      if(!found){
+        guesses--
+      }
+      console.log('You have: ' + guesses + ' guesses remaining.')
       guessLetter()
     }else{
+      console.log('-------')
       console.log('YOU WIN')
-      return false
+      console.log('-------')
+      inquirer.prompt([{
+        type: 'confirm',
+        name: 'gameStatus',
+        message: 'Play again?'
+      }]).then(function(response){
+        if(response.gameStatus === true){
+          word = new Word('random')
+          guesses = 7;
+          console.log(word.wordDisplay().join(' '))
+          console.log('You have: ' + guesses + ' guesses remaining.')
+          guessLetter()
+        }else{
+          console.log('-------------------')
+          console.log('Thanks for playing!')
+          console.log('-------------------')
+        }
+      })
     }
 })}
-var game = true;
-while(game === true){
-  game = guessLetter();
-}
+console.log("Welcome to CLI-Hangman!")
+console.log(word.wordDisplay().join(' '))
+console.log('You have: ' + guesses + ' guesses remaining.')
+guessLetter()

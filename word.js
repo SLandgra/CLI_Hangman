@@ -6,6 +6,7 @@ function Word(word){
     var letter = new Letter(element)
     wordArray.push(letter)
   })
+  this.stringWord = word
   this.word = wordArray
   this.wordDisplay = function(){
     var display = [];
@@ -15,9 +16,13 @@ function Word(word){
     return display
   }
   this.guess = function(letter){
+    var found = false;
     this.word.forEach(function(element){
-      element.check(letter)
+      if(element.check(letter)){
+        found = true;
+      }
     })
+    return found
   }
 }
 module.exports = Word
